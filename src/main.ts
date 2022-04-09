@@ -12,20 +12,17 @@ import { unmountComponentAtNode } from "react-dom";
 
 function react2vue(
   reactComponent: FunctionComponent<any> | ComponentClass<any>,
-  props?: string[]
+  props: string[] = []
 ) {
   return defineComponent({
-    props: props ?? [],
+    props,
     setup(props) {
       const el = ref<HTMLDivElement>();
-
       let root: Root | null = null;
 
       watch([props, el], ([props, el]) => {
-        if (!root) {
-          root = createRoot(el as HTMLDivElement);
-        }
-        const reactElement = createElement(reactComponent, props, []);
+        !root && (root = createRoot(el as HTMLDivElement));
+        const reactElement = createElement(reactComponent, props);
         root.render(reactElement);
       });
 
