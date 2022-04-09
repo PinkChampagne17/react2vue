@@ -49,7 +49,9 @@ function Printer({ text }: { text: string }) {
 function Counter() {
   const [count, setCount] = useState(0);
 
-  return createElement(Fragment, null, [
+  return createElement(
+    Fragment,
+    null,
     createElement(
       "button",
       {
@@ -64,8 +66,8 @@ function Counter() {
         onClick: () => setCount(count - 1),
       },
       "-"
-    ),
-  ]);
+    )
+  );
 }
 
 const ReactPrinter = react2vue(Printer, ["text"]);
