@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import { createApp, onBeforeUnmount } from "vue";
 import {
   ComponentClass,
   createElement,
@@ -6,8 +6,9 @@ import {
   FunctionComponent,
   useState,
 } from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot, Root } from "react-dom/client";
 import { defineComponent, h, ref, watch } from "vue";
+import { unmountComponentAtNode } from "react-dom";
 
 function react2vue(
   reactComponent: FunctionComponent<any> | ComponentClass<any>,
@@ -18,12 +19,17 @@ function react2vue(
     setup(props) {
       const el = ref<HTMLDivElement>();
 
-      watch([props, el], ([props, el], _, onCleanup) => {
-        const root = createRoot(el as HTMLDivElement);
-        const reactElement = createElement(reactComponent, props);
+      let root: Root | null = null;
+
+      watch([props, el], ([props, el]) => {
+        if (!root) {
+          root = createRoot(el as HTMLDivElement);
+        }
+        const reactElement = createElement(reactComponent, props, []);
         root.render(reactElement);
-        onCleanup(() => root.unmount());
       });
+
+      onBeforeUnmount(() => el.value && unmountComponentAtNode(el.value));
 
       return { el };
     },
