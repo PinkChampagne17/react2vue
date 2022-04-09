@@ -55,7 +55,7 @@ function Counter() {
     createElement(
       "button",
       {
-        onClick: () => setCount(count + 1),
+        onClick: () => setCount((count) => count + 1),
       },
       "+"
     ),
@@ -63,7 +63,7 @@ function Counter() {
     createElement(
       "button",
       {
-        onClick: () => setCount(count - 1),
+        onClick: () => setCount((count) => count - 1),
       },
       "-"
     )
