@@ -8,7 +8,6 @@ import {
 } from "react";
 import { createRoot, Root } from "react-dom/client";
 import { defineComponent, h, ref, watch } from "vue";
-import { unmountComponentAtNode } from "react-dom";
 
 function react2vue(
   reactComponent: FunctionComponent<any> | ComponentClass<any>,
@@ -26,7 +25,7 @@ function react2vue(
         root.render(reactElement);
       });
 
-      onBeforeUnmount(() => el.value && unmountComponentAtNode(el.value));
+      onBeforeUnmount(() => el.value && root?.unmount());
 
       return { el };
     },
